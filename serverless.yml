@@ -1,0 +1,115 @@
+service: Veterinarian Hospital Data API
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    NODE_ENV: dev
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+
+package:
+  exclude:
+    - config/.env.stg
+    - config/.env.pro
+  include:
+    - config/.env.dev
+
+functions:
+  createPatient:
+    handler: app/handler.createPatient
+    events:
+      - http:
+          path: patient
+          method: post
+  updatePatient:
+    handler: app/handler.updatePatient
+    events:
+      - http:
+          path: patient/{_id}
+          method: put
+  findPatients:
+    handler: app/handler.findPatients
+    events:
+      - http:
+          path: patient
+          method: get
+  findOnePatient:
+    handler: app/handler.findOnePatient
+    events:
+      - http:
+          path: patient/{_id}
+          method: get
+
+  deleteOnePatient:
+    handler: app/handler.deleteOnePatient
+    events:
+      - http:
+          path: patient/{_id}
+          method: delete
+  getPopularPatient:
+    handler: app/handler.getPopularPatient
+    events:
+      - http:
+          path: patient-popular
+          method: get
+  createAppointment:
+    handler: app/handler.createAppointment
+    events:
+      - http:
+          path: appointment
+          method: post
+  updateAppointment:
+    handler: app/handler.updateAppointment
+    events:
+      - http:
+          path: appointment/{_id}
+          method: put
+  findAppointments:
+    handler: app/handler.findAppointments
+    events:
+      - http:
+          path: appointment
+          method: get
+  findAppointmentByPatientId:
+    handler: app/handler.findAppointmentByPatientId
+    events:
+      - http:
+          path: appointment-patient/{patientId}
+          method: get
+  findOneAppointment:
+    handler: app/handler.findOneAppointment
+    events:
+      - http:
+          path: appointment/{_id}
+          method: get
+  deleteOneAppointment:
+    handler: app/handler.deleteOneAppointment
+    events:
+      - http:
+          path: appointment/{_id}
+          method: delete
+  findAllRecordsForToday:
+    handler: app/handler.findAllRecordsForToday
+    events:
+      - http:
+          path: appointment-today
+          method: get
+  listOfAllUnpaid:
+    handler: app/handler.listOfAllUnpaid
+    events:
+      - http:
+          path: appointment-unpaid
+          method: get
+  viewBalances:
+    handler: app/handler.viewBalances
+    events:
+      - http:
+          path: balance
+          method: get
+          request:
+            parameters:
+              querystrings:
+                days: false
